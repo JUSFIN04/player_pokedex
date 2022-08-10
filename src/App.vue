@@ -22,9 +22,13 @@ async function search() {
 }
 
 function processPokeApi(jsonResults) {
-  let pokemonObj = new Pokemon(jsonResults.name, jsonResults.abilities, jsonResults.species, jsonResults.height, jsonResults.weight, jsonResults.types)
+  console.log("inside process api fucntion")
+  console.log(jsonResults.sprites)
+  let pokemonObj = new Pokemon(jsonResults.name, jsonResults.abilities, jsonResults.species, jsonResults.height, jsonResults.weight, jsonResults.types, jsonResults.sprites)
   return pokemonObj;
 }
+
+
 </script>
 
 <template>
@@ -35,7 +39,9 @@ function processPokeApi(jsonResults) {
       <ul>
         <li class="logo-list-item">
           <div class="logo-holder">
-            <img class="logo" src="./assets/css-downloads/d5tyrqg-fcbb2428-7327-47fd-a31c-0ca7286169ba.png">
+            <router-link to="/">
+              <img class="logo" src="./assets/css-downloads/d5tyrqg-fcbb2428-7327-47fd-a31c-0ca7286169ba.png">
+            </router-link>
           </div>
         </li>
         <li class="search-box-list-item">
@@ -43,52 +49,19 @@ function processPokeApi(jsonResults) {
             <label for="pokedex-search">Search the Pokedex: </label>
             <input type="search" id="pokedexSearch" name="q" aria-label="Search through players pokedex"
               placeholder="try typing Bulbasur">
-            <button @click="search"><img class-="search-box-icon" src=""></button>
+            <router-link to="/">
+              <button @click="search"><img class-="search-box-icon" src=""></button>
+            </router-link>
           </div>
         </li>
-        <li>All Pokemon</li>
+        <li class="nav-list-item">
+          <router-link to="/catalougue">Catalougue</router-link>
+        </li>
         <li>Profile</li>
         <li>About</li>
       </ul>
     </nav>
-    <main v-if="displayedPokemon" class="mid-center">
-      <div v-if="displayedPokemon" class="pokemon-display">
-      <div class="pokemon-card">
-        <div class="pokemon-card-frame">
-        <div class="pokemon-card-header">
-            <h3> {{ displayedPokemon.name }}</h3>
-        </div>
-        <div class="pokemon-card-image">
-        <img src="404" alt="Pokemon image goes here">
-        </div>
-        <div>
-            <div class="pokemon-card-body">
-              <h4>Pokemon abilites:</h4>
-              <ul>
-                <li v-for="pokeAbility in displayedPokemon.abilities" :key="pokeAbility">{{ pokeAbility }}</li>
-              </ul>
-              <h4>Pokemon species:</h4>
-              <p> {{ displayedPokemon.species }}</p>
-              <h4>Pokemon height:</h4>
-              <p> {{ displayedPokemon.height }}</p>
-              <h4>Pokemon weight:</h4>
-              <p> {{ displayedPokemon.weight }}</p>
-              <h4>Pokemon types:</h4>
-              <ul>
-                <li v-for="pokeType in displayedPokemon.types" :key="pokeType">{{ pokeType }}</li>
-              </ul>
-            </div>
-        </div>
-        </div>
-      </div>
-      </div>
-      <pre v-else>
-        <p>Search for a pokemon</p>
-      </pre>
-    </main>
-    <pre v-else class="mid-center-blank">
-      <p>Search for a pokemon</p>
-    </pre>
+    <router-view :displayedPokemon="displayedPokemon"></router-view>
     <footer class="footer-center footer">
 
     </footer>
@@ -138,8 +111,19 @@ function processPokeApi(jsonResults) {
   margin: 1%;
   list-style-type: none;
 }
-.nav li:hover{
-  color:antiquewhite;
+
+.nav li:hover {
+  color: antiquewhite;
+}
+
+.nav-list-item {
+  color: inherit;
+  text-decoration: none;
+}
+
+.nav-list-item>a {
+  color: inherit;
+  text-decoration: none;
 }
 
 .logo-list-item {
@@ -147,7 +131,7 @@ function processPokeApi(jsonResults) {
   width: 20%;
   height: min-content;
   object-fit: scale-down;
-  
+
   justify-content: center;
   align-items: center;
   flex-wrap: none;
@@ -171,14 +155,16 @@ function processPokeApi(jsonResults) {
   width: 32%;
   justify-content: center;
   align-items: center;
-   
+
 }
-.search-box-list-item :hover{
-color: black;
+
+.search-box-list-item :hover {
+  color: black;
 }
+
 .search-box {
   font-size: 90%;
-  
+
   border: 2px double #A1A762;
   border-radius: 5%;
   padding: .40%;
@@ -186,9 +172,9 @@ color: black;
   max-width: 100%x;
   max-height: 100px;
   min-width: 0;
-   flex-flow: coloumn wrap;
-   flex: 1 100%;
- 
+  flex-flow: coloumn wrap;
+  flex: 1 100%;
+
 }
 
 .search-box button {
@@ -207,98 +193,8 @@ color: black;
   padding: 2px;
 }
 
-/* Middle content area */
-.mid-center {
-  grid-area: mid-center;
-  /* // background-color: beige; */
-  background: radial-gradient(  #F8F4AB,#8B7F37 );
-  border: 4px solid #8B7F37;
-  border-image: radial-gradient(#F8F4AB 80%, #8B7F37) 1;
-  display: flex;
-  padding: 2%;
-  
-}
 
-.mid-center-blank {
-  grid-area: mid-center;
-  background-color: #F8F4AB;
-  border: 1vh solid #8B7F37;
-  margin-top: 0px;
-  margin-bottom: 0px;
-  display: flex;
-  padding-top: 100px;
-  justify-content: center;
-  font-size: 5vh;
-}
-
-.pokemon-display {
-  display: flex;
-  background: radial-gradient(  #F8F4AB,antiquewhite, #F8F4AB);
-  border: 9px double #ff9a68; 
-  border-radius: 1%;
-  width: 100%;
-  justify-content: space-around;
-  align-items: center;
-}
-
-.pokemon-card{
-  width: 70%;
-  height:auto;
-  margin: 2%;
-  border: 30px solid #8B7F37;
-  border-radius: 1%;
-  background: radial-gradient(#F8F4AB, #C5B26C);
-  padding: 1%;
-}
-
-.pokemon-card-frame{
-  padding: 20px;
-  border: 20px double #8B7F37;
-}
-.pokemon-card  h4 {
-background-color: #A1A762;
-}
-
-.pokemon-card-header {
-  background-color: #A1A762;
-  margin-top: -4%;
-  margin-bottom: -1%;
-  font-size: 200%; 
-  padding-left: 2%;
-  border-left: 80px double #F8F4AB;
-  border-right: 88px ridge #C5B26C;
-}
-.pokemon-card-image {
-   border: 4px solid #C5B26C;
-   justify-content: center;
-   align-items: center;
-   border-radius: 10px;
-   min-height: 300px;
-}
-
-
-
-.pokemon-card-body {
-  text-align: center;
-  padding-left: 4%;
-  padding-right: 4%;
-  margin-top: 4%;
-  border: 4px dotted #C5B26C;
-  border-radius: 1%;
-  width: auto;
-  height: auto;
-  background: radial-gradient( transparent, transparent, #C5B26C);
-  font-size: 120%;
-}
-
-/* footer content area */
-.footer-center {
-  grid-area: footer-center;
-  background-color: #ff9a68;
-  display: flex;
-  
-}
-
+/* footer  */
 .footer {
   height: 20px;
 

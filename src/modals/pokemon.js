@@ -1,11 +1,12 @@
 class Pokemon {
-    constructor(nameInput, abilitiesInput, speciesInput, heightInput, weightInput, typesInput) {
+    constructor(nameInput, abilitiesInput, speciesInput, heightInput, weightInput, typesInput, spritesInput) {
         this.name = nameInput;
         this.abilities = this.#cleanUpAbilities(abilitiesInput);
         this.species = speciesInput.name;
         this.height = heightInput;
         this.weight = weightInput;
         this.types = this.#cleanUpTypes(typesInput);
+        this.sprites  = this.#cleanUpSprites(spritesInput);
     }
 
     #cleanUpTypes(typeArr){
@@ -17,10 +18,17 @@ class Pokemon {
 
     #cleanUpAbilities(abilityArr){
         //Should return a new array of Strings for the abilites
-        console.log(abilityArr);
-        let abilites = abilityArr.map(element => element.ability.name)
+       // console.log(abilityArr);
+        let abilites = abilityArr.map(element => element.ability.name);
         console.log(abilites);
         return abilites;
+    }
+
+    #cleanUpSprites(spriteObj){
+        //should return card image
+        console.log(spriteObj);
+        let sprites = spriteObj.other["official-artwork"].front_default;
+        return sprites;
     }
 
     // #cleanUpSpecies(speciesArr){
